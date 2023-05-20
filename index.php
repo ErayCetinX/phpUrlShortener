@@ -1,3 +1,12 @@
+<?php
+    session_start();
+    $mysql = new mysqli("localhost", "root");
+    if($mysql -> connect_errno) {
+        echo "has error";
+        exit();
+    } 
+    define("Connected", true);
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,6 +17,49 @@
     <title>Url Shortener</title>
 </head>
 <body style="background-color: #1c294e; user-select: none;">
+    <header class="flex justify-between p-3">
+      <div class="text-white font-bold text-xl">
+        Shortener
+      </div>
+      
+    <?php
+        if(isset($_SESSION["username"])) {
+                echo 
+                    '<div class="flex items-center">
+                        <a>
+                            <div class="p-3 rounded-lg text-white font-bold" type="button">'
+                                .$_SESSION["username"].
+                            '</div>
+                        </a>
+                        <form method="POST">
+                            <button class="mx-3 font-bold" style="color: #c6303e" type="submit" name="logout">Logout</button>
+                        </form>
+                        </div>
+                    ';
+        } else {
+            echo '
+            <div class="flex items-center">
+            <a href="login.php" class="text-white font-bold mr-2">
+                <div class="p-3 rounded-lg border-x border-y border-solid border-white" type="button">
+                    Login
+                </div>
+            </a>
+            <a href="register.php" class="text-white font-bold ml-2">
+                <div class="p-3 rounded-lg border-x border-y border-solid border-white" type="button">
+                    Register
+                </div>
+            </a>
+            </div>';
+        }
+    ?>
+    <?php 
+        if(array_key_exists('logout', $_POST)) {
+            session_destroy();
+            header("Location: index.php");
+            exit;
+        }
+      ?>
+    </header>
     <div class="h-72 flex items-center justify-center">
         <h1 class="font-bold text-4xl text-white text-center">
             Shorter, more useful links 
