@@ -18,7 +18,13 @@
                 Shortener
             </div>
         </a>
-        <div class="font-medium text-white font-bold text-lg ml-3">My links</div>
+        <?php
+            if(isset($_SESSION["username"])) {
+                echo '<a href="links.php">
+                    <div class="font-medium text-white font-bold text-lg ml-3">My links</div>
+                </a>';
+            }
+       ?>
       </div>
       
     <?php
@@ -73,7 +79,7 @@
             <tbody>
                      <?php 
                 $mysql = new mysqli("localhost","root","","urlshortener");
-                $result = mysqli_query($mysql,"select * from links where username='asd'");
+                $result = mysqli_query($mysql,"select * from links where username='".$_SESSION["username"]."'");
                 while($row = mysqli_fetch_array($result))
                     {
 

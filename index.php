@@ -24,9 +24,13 @@
                 Shortener
             </div>
         </a>
-        <a href="links.php">
-            <div class="font-medium text-white font-bold text-lg ml-3">My links</div>
-</a>
+       <?php
+        if(isset($_SESSION["username"])) {
+            echo '<a href="links.php">
+                <div class="font-medium text-white font-bold text-lg ml-3">My links</div>
+            </a>';
+        }
+       ?>
       </div>
       
     <?php
