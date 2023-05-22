@@ -18,8 +18,15 @@
 </head>
 <body style="background-color: #1c294e; user-select: none;">
     <header class="flex justify-between p-3">
-      <div class="text-white font-bold text-xl">
-        Shortener
+      <div class="flex items-center">
+        <a href="index.php">
+            <div class="text-white font-bold text-xl mr-3">
+                Shortener
+            </div>
+        </a>
+        <a href="links.php">
+            <div class="font-medium text-white font-bold text-lg ml-3">My links</div>
+</a>
       </div>
       
     <?php
@@ -31,7 +38,7 @@
                                 .$_SESSION["username"].
                             '</div>
                         </a>
-                        <form method="POST">
+                        <form style="margin: 0;" method="POST">
                             <button class="mx-3 font-bold" style="color: #c6303e" type="submit" name="logout">Logout</button>
                         </form>
                         </div>
@@ -83,7 +90,9 @@
         <form class="w-full flex justify-center" method="POST" enctype="multipart/form">
             <input name="url" placeholder="Enter URL" class="rounded-xl px-2 py-3 w-2/4 text-xl outline-none text-sky-500" />
             <div class="flex justify-center ml-3 bg-blue-800 p-2 rounded-xl text-white font-bold">
-                <input name="submit" type="submit" class="cursor-pointer" />
+                <?php if(isset($_SESSION["username"])) {echo '<input name="submit" type="submit" class="cursor-pointer" value="Kaydet" />';}else {
+            echo '<input name="submit" type="submit" class="cursor-pointer" value="Oluştur" />';
+        }?>
             </div>
         </form>
     </div>
@@ -110,6 +119,12 @@
                     if($is_Passed === true) {
                         if(str_word_count($_POST["url"]) > 0) {
                             echo '<div class="flex justify-center items-center mt-3"><span class="flex"><p class="text-white font-xl">Your link is ready</p> <a class="text-sky-500 font-bold" href="'.$_POST['url'].'">https://localhost/'.$str.'</a></span></div>';
+                            if($_SESSION["username"]) {
+                                $mysql = new mysqli("localhost","root","","urlshortener");
+                                mysqli_query($mysql, "insert into links (link, shortedLink, username) values ('".$_POST["url"]."','http://localhost/".$str."','".$_SESSION["username"]."')");
+                         header("Location: links.php");       
+                         exit;
+                            }
                         }
                     }
                 }
