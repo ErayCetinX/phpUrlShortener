@@ -123,7 +123,7 @@
                     if($is_Passed === true) {
                         if(str_word_count($_POST["url"]) > 0) {
                             echo '<div class="flex justify-center items-center mt-3"><span class="flex"><p class="text-white font-xl">Your link is ready</p> <a class="text-sky-500 font-bold" href="'.$_POST['url'].'">https://localhost/'.$str.'</a></span></div>';
-                            if($_SESSION["username"]) {
+                            if(isset($_SESSION["username"])) {
                                 $mysql = new mysqli("localhost","root","","urlshortener");
                                 mysqli_query($mysql, "insert into links (link, shortedLink, username) values ('".$_POST["url"]."','http://localhost/".$str."','".$_SESSION["username"]."')");
                          header("Location: links.php");       
